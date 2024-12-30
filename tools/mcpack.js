@@ -1036,10 +1036,12 @@ export default class extends TOOL {
 	}
 	includeManifest(include, from, directory) {
 		this.currentDirectory = directory;
-		let path = this.resolveFilePath(this.resolveVariable(include));
-		if (!path)
-			throw new Error("'" + include + "': manifest not found!");
-		this.parseManifest(path, from);
+		if ("string" == typeof include) {
+			let path = this.resolveFilePath(this.resolveVariable(include));
+			if (!path)
+				throw new Error("'" + include + "': manifest not found!");
+			this.parseManifest(path, from);
+		}
 	}
 	mapBuiltins(builtins) {
 		const map = new Map;
