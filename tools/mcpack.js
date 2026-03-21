@@ -378,7 +378,9 @@ export default class extends TOOL {
 	}
 	run() {
 		if (this.hasCreationMain === undefined) {
+			const savedErrorCount = this.errorCount;
 			const builtins = this.getPlatformBuiltins();
+			this.errorCount = savedErrorCount;
 			for (let builtin of builtins) {
 				this.report(builtin.specifier);
 				for (let manifest of builtin.manifests) {
@@ -386,7 +388,9 @@ export default class extends TOOL {
 				}
 			}
 		}
+		const savedErrorCount = this.errorCount;
 		this.builtins = this.mapBuiltins(this.getPlatformBuiltins());
+		this.errorCount = savedErrorCount;
 		if (this.hasCreationMain) {
 			const specifier = "moddable:mc/config";
 			this.builtins.set(specifier, { specifier, manifests:[] });
@@ -801,7 +805,7 @@ export default class extends TOOL {
 				if ((patternTrailer.length == 0) || (matchKey.endsWith(patternTrailer) && (matchKey.length >= expansionKey.length))) {
 					let target = matchObj[expansionKey];
 					let patternMatch = matchKey.slice(patternBase.length, matchKey.length - patternTrailer.length);
-					return PACKAGE_TARGET_RESOLVE(packageURL, target, patternMatch, isImports, conditions);
+					return this.PACKAGE_TARGET_RESOLVE(packageURL, target, patternMatch, isImports, conditions);
 				}
 			}
 		}
